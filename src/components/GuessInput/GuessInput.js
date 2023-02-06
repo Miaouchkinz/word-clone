@@ -7,12 +7,6 @@ function GuessInput() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-
-        if (guess.length !== 5) {
-          window.alert('Please enter exactly 5 characters. <3');
-          return;
-        }
-
         console.log({ guess });
         setGuess('');
       }}
@@ -23,8 +17,8 @@ function GuessInput() {
         id="guess-input"
         type="text"
         required
-        minLength={5}
-        maxLength={5}
+        pattern="[a-zA-Z]{5}"
+        title="Enter a 5 letter word"
         value={guess}
         onChange={(e) => {
           const nextGuess = e.target.value.toUpperCase();
