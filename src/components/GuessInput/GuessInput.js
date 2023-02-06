@@ -1,6 +1,6 @@
 import React from 'react';
 
-function GuessInput({ addNewGuess }) {
+function GuessInput({ addNewGuess, isDisabled }) {
   const [tentativeGuess, setTentativeGuess] = React.useState('');
 
   return (
@@ -17,6 +17,7 @@ function GuessInput({ addNewGuess }) {
         id="guess-input"
         type="text"
         required
+        disabled={isDisabled}
         pattern="[a-zA-Z]{5}"
         title="Enter a 5 letter word"
         value={tentativeGuess}
