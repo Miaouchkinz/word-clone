@@ -17,15 +17,17 @@ function Game() {
 
   const handleNewGuess = (newGuess) => {
     const newGuesses = [...guesses, newGuess];
+
     if (newGuesses.length === NUM_OF_GUESSES_ALLOWED) {
       setGuessLimitReached(true);
     }
-    setGuesses([...guesses, newGuess]);
+
+    setGuesses(newGuesses);
   };
 
   return (
     <>
-      <GuessResults guesses={guesses} />
+      <GuessResults guesses={guesses} answer={answer} />
       <GuessInput
         addNewGuess={handleNewGuess}
         isDisabled={guessLimitReached}
