@@ -1,8 +1,11 @@
+import { GAME_STATUS, NUM_OF_GUESSES_ALLOWED } from '../../constants';
+
 import GuessInput from '../GuessInput';
 import GuessResults from '../GuessResults';
-import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
+import LostBanner from '../LostBanner/LostBanner';
 import React from 'react';
 import { WORDS } from '../../data';
+import WonBanner from '../WonBanner/WonBanner';
 import { sample } from '../../utils';
 
 // Pick a random word on every pageload.
@@ -12,14 +15,17 @@ console.info({ answer });
 
 function Game() {
   const [guesses, setGuesses] = React.useState([]);
-  const [guessLimitReached, setGuessLimitReached] =
-    React.useState(false);
+  const [gameStatus, setGameStatus] = React.useState(
+    GAME_STATUS.RUNNING
+  );
 
   const handleNewGuess = (newGuess) => {
     const newGuesses = [...guesses, newGuess];
 
-    if (newGuesses.length === NUM_OF_GUESSES_ALLOWED) {
-      setGuessLimitReached(true);
+    if (newGuess === answer) {
+      setGameStatus(GAME_STATUS.WON);
+    } else if (newGuesses.length === NUM_OF_GUESSES_ALLOWED) {
+      setGameStatus(GAME_STATUS.LOST);
     }
 
     setGuesses(newGuesses);
@@ -30,8 +36,14 @@ function Game() {
       <GuessResults guesses={guesses} answer={answer} />
       <GuessInput
         addNewGuess={handleNewGuess}
-        isDisabled={guessLimitReached}
+        isDisabled={gameStatus !== GAME_STATUS.RUNNING}
       />
+      {gameStatus === GAME_STATUS.WON && (
+        <WonBanner numOfGuesses={guesses.length} />
+      )}
+      {gameStatus === GAME_STATUS.LOST && (
+        <LostBanner answer={answer} />
+      )}
     </>
   );
 }
